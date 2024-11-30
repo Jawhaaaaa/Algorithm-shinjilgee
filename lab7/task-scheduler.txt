@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        unordered_map<char, int> freq;
+        for (char task : tasks) {
+            freq[task]++;
+        }
+        vector<int> frequencies;
+        for (auto& entry : freq) {
+            frequencies.push_back(entry.second);
+        }
+        sort(frequencies.begin(), frequencies.end(), greater<int>()); 
+
+        int maxFreq = frequencies[0];
+        int idleTime = (maxFreq - 1) * n;
+
+        for (int i = 1; i < frequencies.size(); i++) {
+            idleTime -= min(frequencies[i], maxFreq - 1);
+        }
+
+        idleTime = max(0, idleTime);
+        return tasks.size() + idleTime;
+    }
+};
